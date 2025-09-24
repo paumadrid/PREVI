@@ -70,7 +70,7 @@ export default function HomeScreen() {
       pagingEnabled
       showsVerticalScrollIndicator={false}
       snapToAlignment="start"
-      decelerationRate="fast"
+      decelerationRate="slow"
     />
   );
 }
