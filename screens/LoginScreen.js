@@ -41,7 +41,7 @@ export default function LoginScreen({ navigation }) {
           {/* Botón de acceso manual */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("Main")}
           >
             <Text style={styles.buttonText}>Iniciar sesión</Text>
           </TouchableOpacity>

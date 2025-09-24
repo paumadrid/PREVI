@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
+  Animated,
   View,
   Text,
   StyleSheet,
   Dimensions,
-  FlatList,
   Image,
+  TouchableOpacity,
 } from "react-native";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 const { height, width } = Dimensions.get("window");
 
-// Datos de ejemplo (luego vendrán de Firebase)
+// Datos de ejemplo
 const users = [
   {
     id: "1",
@@ -49,59 +51,80 @@ const users = [
   },
 ];
 
-export default function HomeScreen() {
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Image source={item.image} style={styles.image} />
-      <View style={styles.info}>
-        <Text style={styles.name}>
-          {item.name}, {item.age}
-        </Text>
-        <Text style={styles.bio}>{item.bio}</Text>
-      </View>
-    </View>
-  );
+export default function HomeScreen({ navigation }) {
+  const tabBarHeight = useBottomTabBarHeight(); // 👈 altura de la barra inferior
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   return (
-    <FlatList
+    <Animated.FlatList
       data={users}
       keyExtractor={(item) => item.id}
-      renderItem={renderItem}
+      renderItem={({ item, index }) => {
+        return (
+          <View
+            style={[styles.card, { height: height - tabBarHeight }]}
+          >
+            <Image source={item.image} style={styles.image} />
+            <View style={styles.info}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Profile", { user: item })}
+              >
+                <Text style={styles.name}>
+                  {item.name}, {item.age}
+                </Text>
+              </TouchableOpacity>
+              <Text style={styles.bio}>{item.bio}</Text>
+            </View>
+          </View>
+        );
+      }}
       pagingEnabled
       showsVerticalScrollIndicator={false}
       snapToAlignment="start"
-      decelerationRate="slow"
+  decelerationRate={0.95}
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: true }
+      )}
     />
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    height: height,
     width: width,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#000",
   },
   image: {
     width: "100%",
-    height: "75%",
+    height: "100%",
     resizeMode: "cover",
+    opacity: 1,
   },
   info: {
     position: "absolute",
-    bottom: 50,
-    left: 20,
-    right: 20,
+    bottom: 15,
+    left: 10,
+    alignItems: "flex-start",
+    width: "75%",
   },
   name: {
     color: "#fff",
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
+    textAlign: "left",
+    marginBottom: 4,
+    textShadowColor: "#222",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
   bio: {
     color: "#ddd",
-    fontSize: 16,
-    marginTop: 5,
+    fontSize: 18,
+    marginTop: 2,
+    textAlign: "left",
+    textShadowColor: "#222",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
 });
