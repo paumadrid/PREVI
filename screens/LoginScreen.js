@@ -33,9 +33,9 @@ export default function LoginScreen({ navigation }) {
       setError("Contraseña incorrecta");
       return;
     }
-    setError("");
-      await AsyncStorage.setItem('currentUser', username);
-      navigation.navigate("GroupChoice");
+  setError("");
+  await AsyncStorage.setItem('currentUser', username);
+  navigation.navigate("Main");
   };
 
   return (

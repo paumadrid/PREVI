@@ -1,9 +1,38 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function JoinGroupScreen({ navigation }) {
   const [groupOrEmail, setGroupOrEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleJoinGroup = async () => {
+    if (!groupOrEmail || !password) {
+      setError("Completa todos los campos");
+      return;
+    }
+    // Buscar grupo
+    const groupData = await AsyncStorage.getItem(`group:${groupOrEmail}`);
+    if (!groupData) {
+      setError("Grupo no encontrado");
+      return;
+    }
+    const groupObj = JSON.parse(groupData);
+    if (groupObj.password !== password) {
+      setError("Contraseña incorrecta");
+      return;
+    }
+    // Asociar usuario actual al grupo
+    const currentUser = await AsyncStorage.getItem('currentUser');
+    if (currentUser) {
+      const userObj = JSON.parse(await AsyncStorage.getItem(`user:${currentUser}`));
+      userObj.group = groupOrEmail;
+      await AsyncStorage.setItem(`user:${currentUser}`, JSON.stringify(userObj));
+    }
+    setError("");
+    navigation.navigate("Main");
+  };
 
   return (
     <KeyboardAvoidingView
@@ -28,9 +57,10 @@ export default function JoinGroupScreen({ navigation }) {
             onChangeText={setPassword}
             secureTextEntry
           />
+          {error ? <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text> : null}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Main")}
+            onPress={handleJoinGroup}
           >
             <Text style={styles.buttonText}>Unirse</Text>
           </TouchableOpacity>

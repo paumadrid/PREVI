@@ -5,7 +5,7 @@ import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import MainTabs from "./MainTabs";
-import GroupChoiceScreen from "./screens/GroupChoiceScreen";
+// import GroupChoiceScreen from "./screens/GroupChoiceScreen";
 import ChatListScreen from "./screens/ChatListScreen";
 import ChatScreen from "./screens/ChatScreen";
 import CreateGroupScreen from "./screens/CreateGroupScreen";
@@ -21,8 +21,7 @@ export default function App() {
   <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* Pantalla inicial */}
         <Stack.Screen name="Login" component={LoginScreen} />
-  {/* Pantalla de elección de grupo */}
-  <Stack.Screen name="GroupChoice" component={GroupChoiceScreen} />
+  {/* Pantalla de elección de grupo eliminada */}
   {/* Pantalla de lista de chats */}
   <Stack.Screen name="ChatList" component={ChatListScreen} />
   {/* Pantalla de chat individual */}
