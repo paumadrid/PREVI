@@ -1,15 +1,23 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from "react-native";
 
 export default function ProfileScreen({ route }) {
   const { user } = route.params;
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
       <Image source={user.image} style={styles.image} />
       <Text style={styles.name}>{user.name}, {user.age}</Text>
       <Text style={styles.bio}>{user.bio}</Text>
     </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
   );
 }
 

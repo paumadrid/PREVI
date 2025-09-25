@@ -49,6 +49,20 @@ const users = [
     bio: "Te vacuno cuando quieras",
     image: require("../assets/antonio.jpg"),
   },
+  {
+    id: "6",
+    name: "Ángela",
+    age: 20,
+    bio: "La chica más guapa de Buenos Aires",
+    image: require("../assets/angela.jpg"),
+  },
+  {
+    id: "7",
+    name: "Claudia",
+    age: 20,
+    bio: "Siempre lista para un porrete",
+    image: require("../assets/claudia.jpg"),
+  },
 ];
 
 export default function HomeScreen({ navigation }) {
@@ -81,7 +95,7 @@ export default function HomeScreen({ navigation }) {
       pagingEnabled
       showsVerticalScrollIndicator={false}
       snapToAlignment="start"
-  decelerationRate={0.95}
+      decelerationRate={0.95}
       onScroll={Animated.event(
         [{ nativeEvent: { contentOffset: { y: scrollY } } }],
         { useNativeDriver: true }
@@ -117,14 +131,5 @@ const styles = StyleSheet.create({
     textShadowColor: "#222",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
-  },
-  bio: {
-    color: "#ddd",
-    fontSize: 18,
-    marginTop: 2,
-    textAlign: "left",
-    textShadowColor: "#222",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
+  }
 });
